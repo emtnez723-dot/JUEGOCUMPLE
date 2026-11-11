@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>ESPESICA GAMES 26/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+input{-webkit-user-select:text;user-select:text;-webkit-appearance:none}body{margin:0;background:#0a0620;color:#fff;font-family:"Trebuchet MS",sans-serif;min-height:100vh;touch-action:manipulation;
+background-image:radial-gradient(circle at 20% 0,#3b0a6b55,transparent 50%),radial-gradient(circle at 90% 100%,#00e5ff33,transparent 50%)}
+h1{font-size:clamp(26px,6vw,46px);text-align:center;margin:18px 0 4px;color:#ff2bd6;text-shadow:0 0 12px #ff2bd6,0 0 30px #7a00ff}
+h2{color:#00e5ff;text-shadow:0 0 10px #00e5ff;text-align:center}
+.wrap{max-width:560px;transition:max-width .3s;margin:auto;padding:12px}
+.btn{display:block;width:100%;padding:16px;margin:10px 0;font-size:19px;font-weight:bold;color:#fff;background:#1a0f3a;border:2px solid #00e5ff;border-radius:14px;box-shadow:0 0 14px #00e5ff88;cursor:pointer;transition:.15s}
+.btn:active{transform:scale(.96)}.btn.p{border-color:#ff2bd6;box-shadow:0 0 14px #ff2bd688}
+.btn.s{display:inline-block;width:auto;padding:8px 14px;font-size:15px;margin:4px}
+input,select{width:100%;padding:14px;font-size:18px;margin:8px 0;border-radius:12px;border:2px solid #7a00ff;background:#140a30;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:7px 3px;text-align:center;border-bottom:1px solid #ffffff22}
+th{color:#00e5ff}tr.me td{color:#ffe600;font-weight:bold}
+.card{background:#ffffff0d;border:1px solid #ffffff22;border-radius:14px;padding:12px;margin:12px 0;animation:pop .4s}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}}
+.hud{display:flex;justify-content:space-between;align-items:center;font-weight:bold;gap:6px;flex-wrap:wrap}
+.hud span{background:#ffffff14;padding:5px 10px;border-radius:10px}
+#stage{position:relative;margin:8px auto;touch-action:none}
+canvas{display:block;margin:auto;max-width:100%;border:2px solid #ff2bd6;border-radius:12px;background:#07031a;box-shadow:0 0 20px #ff2bd6aa;touch-action:none}
+.ov{position:absolute;inset:0;background:#000c;display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:12px;padding:20px;text-align:center;z-index:5}
+.ov h2{font-size:32px}
+#grid{display:grid;gap:8px;margin:auto;max-width:760px}
+.c{aspect-ratio:1;font-size:clamp(30px,9vw,68px);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7a00ff,#ff2bd6);border-radius:12px;cursor:pointer;transition:transform .3s;user-select:none;box-shadow:0 0 10px #7a00ff}
+.c.up{background:#1a0f3a;border:2px solid #00e5ff}.c.ok{background:#0a3a2a;border:2px solid #39ff14}
+#pad{display:none;grid-template-columns:repeat(3,92px);gap:6px;justify-content:center;margin:8px auto}
+#pad button{height:76px;font-size:26px;border-radius:12px;background:#1a0f3a;color:#fff;border:2px solid #00e5ff}
+@media(pointer:coarse){#pad{display:grid}}
+.err{color:#ff5470;text-align:center;min-height:20px}.sm{font-size:12px;opacity:.7;text-align:center}
+.big{font-size:64px;line-height:1;filter:drop-shadow(0 0 10px var(--c,#fff));animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.chars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ch{text-align:center;padding:18px 6px;border-radius:18px;background:linear-gradient(160deg,#1a0f3a,#0d0724);border:2px solid var(--c);box-shadow:0 0 16px var(--c),inset 0 0 18px #ffffff10;cursor:pointer;transition:.2s;font-size:18px}
+.ch:active,.ch:hover{transform:scale(1.05) rotate(-1deg)}.ch b{display:block;margin-top:8px;color:var(--c);text-shadow:0 0 8px var(--c)}
+.hero{border:2px solid var(--c);box-shadow:0 0 22px var(--c);text-align:center;background:linear-gradient(160deg,#1a0f3a,#0d0724)}
+.games{display:grid;gap:10px;margin:12px 0}
+.gc{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:linear-gradient(90deg,#1a0f3a,#0d0724);border:2px solid var(--c);box-shadow:0 0 14px var(--c);cursor:pointer;transition:.15s}
+.gc:active{transform:scale(.97)}.gi{font-size:40px;filter:drop-shadow(0 0 8px var(--c))}.play{width:42px;height:42px;border-radius:50%;background:var(--c);color:#000;display:flex;align-items:center;justify-content:center;font-size:18px}
+
+/* ===== TEMA ROSA MINIMALISTA ===== */
+body{background:linear-gradient(160deg,#ffb3d1 0%,#ff6fae 50%,#c2468a 100%) fixed;color:#fff;font-family:"Outfit","Helvetica Neue",Arial,sans-serif;font-weight:400}
+h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:clamp(34px,8vw,58px);color:#fff;text-shadow:0 4px 24px #c2468a88;letter-spacing:.5px;margin:22px 0 2px}
+h1 i{font-style:italic;color:#ffe3f0}
+h2{font-family:"DM Serif Display",Georgia,serif;font-weight:400;color:#fff;text-shadow:none;letter-spacing:.3px}
+.sm{opacity:.85;letter-spacing:.4px}
+.card,.hero,.ch,.gc{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);box-shadow:0 10px 30px rgba(150,20,90,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:22px}
+.ch:hover,.ch:active,.gc:active{background:rgba(255,255,255,.3)}
+.ch b{color:#fff;text-shadow:none;font-weight:500}
+.big,.gi{filter:drop-shadow(0 6px 10px rgba(150,20,90,.35))}
+.btn{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.6);border-radius:999px;box-shadow:none;color:#fff;font-family:inherit;font-weight:500;letter-spacing:.5px}
+.btn.p{background:#fff;color:#d6307f;border-color:#fff;box-shadow:0 8px 22px rgba(150,20,90,.3);font-weight:600}
+input,select{background:rgba(255,255,255,.85);border:1px solid #fff;color:#8a1a56;border-radius:999px;font-family:inherit;text-align:center;outline:none}
+input::placeholder{color:#d48ab0}
+.hud span{background:rgba(255,255,255,.22);border-radius:999px;font-weight:500}
+canvas{background:linear-gradient(#fff4f9,#ffd3e8);border:3px solid #fff;border-radius:22px;box-shadow:0 14px 40px rgba(150,20,90,.35)}
+.c{background:linear-gradient(135deg,#ff8cc0,#d6307f);box-shadow:0 6px 14px rgba(150,20,90,.3);border:2px solid #fff}
+.c.up{background:#fff;border:2px solid #ff8cc0}.c.ok{background:#ffe3f0;border:2px solid #fff;opacity:.85}
+.ov{background:rgba(194,70,138,.88);backdrop-filter:blur(6px);border-radius:22px}
+.play{background:#fff;color:#d6307f}
+#pad button{background:rgba(255,255,255,.25);border:1px solid #fff;color:#fff;border-radius:50%}
+th{color:#ffe3f0;font-weight:500}td,th{border-bottom:1px solid rgba(255,255,255,.3)}tr.me td{color:#fff;background:rgba(255,255,255,.22);font-weight:600}
+.err{color:#fff;font-weight:500}
+.rules{text-align:center;padding:26px 20px}.rules .big{font-size:80px}.rt{font-size:clamp(32px,8vw,48px);margin:8px 0 2px}
+.rl{letter-spacing:4px;font-size:14px;opacity:.85;margin-bottom:12px}
+.rule{display:flex;gap:18px;align-items:center;text-align:left;font-size:clamp(20px,5vw,27px);line-height:1.25;margin:18px 4px;font-weight:300}.rule .e{font-size:46px;min-width:54px;text-align:center}
+.pts{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(24px,6vw,34px);background:rgba(255,255,255,.28);border-radius:999px;padding:12px 16px;margin:20px 0 6px}
+</style></head><body><div class="wrap">
+<h1>Espesica <i>Games</i></h1><div class="sm">Campeonato 26/27 · Cierre: 27 nov 2026 · 23:59</div>
+<div id="app"></div></div>
+<script>
+// Firebase Realtime Database vía REST (no necesita apiKey). Reglas necesarias: ".read": true, ".write": true en "scores"
+const URLS=["https://espesica-b51cf-default-rtdb.europe-west1.firebasedatabase.app","https://espesica-b51cf-default-rtdb.firebaseio.com"];let DB=null;
+const DEADLINE=new Date("2026-11-27T23:59:59+01:00");
+const USERS={"José":"monicanaranjo","Atenea":"marvel","Candela":"militar","Ángela":"chupito","Miriam":"sushi","María":"21pilots"};
+const G={fruits:["🍓 Frutas","Frutas"],pairs:["🃏 Parejas","Parejas"],snake:["🍷 Snake","Snake"]};
+let me=null,scores={},stopGame=null;
+const $=s=>document.querySelector(s),app=$("#app");
+// ---- datos ----
+let online=false;
+try{scores=JSON.parse(localStorage.getItem("esp")||"{}")}catch(e){}
+async function pull(){for(const u of(DB?[DB]:URLS)){try{const r=await fetch(u+"/scores.json");if(!r.ok)continue;DB=u;online=true;scores=(await r.json())||{};if(me&&!stopGame)menu();return}catch(e){}}}
+pull();setInterval(pull,3000);
+async function save(g,pts){if(new Date()>DEADLINE)return;const cur=(scores[me]||{})[g]||0;if(pts<=cur)return;(scores[me]=scores[me]||{})[g]=pts;
+try{localStorage.setItem("esp",JSON.stringify(scores))}catch(e){}
+if(DB)try{const u=`${DB}/scores/${encodeURIComponent(me)}/${g}.json`,v=(await(await fetch(u)).json())||0;if(pts>v)await fetch(u,{method:"PUT",body:JSON.stringify(pts)})}catch(e){}}
+// ---- sonido ----
+let AC;function beep(f=600,d=.08,t="square"){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();
+o.type=t;o.frequency.value=f;g.gain.value=.06;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+const win=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.15,"triangle"),i*130));
+const lose=()=>[300,220,150].forEach((f,i)=>setTimeout(()=>beep(f,.2,"sawtooth"),i*150));
+// ---- login ----
+const AV={"José":["🧔","#00e5ff"],"Atenea":["🦸‍♀️","#ff2bd6"],"Candela":["🪖","#39ff14"],"Ángela":["🥂","#ffe600"],"Miriam":["🍣","#ff7a00"],"María":["🎧","#9b5cff"]};
+function login(sel){const names=Object.keys(USERS);
+app.innerHTML=`<div class="sm" style="margin:6px 0 14px">${sel?"Escribe tu contraseña":"Elige tu personaje"}</div>
+${sel?`<div class="card hero" style="--c:${AV[sel][1]}"><div class="big">${AV[sel][0]}</div><h2 style="margin:6px 0">${sel}</h2>
+<input id="p" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="🔑 Contraseña"><div class="err" id="e"></div>
+<button class="btn p" id="go">¡ENTRAR!</button><button class="btn s" id="bk">⬅ Cambiar</button></div>`
+:`<div class="chars">${names.map(n=>`<div class="ch" data-n="${n}" style="--c:${AV[n][1]}"><div class="big">${AV[n][0]}</div><b>${n}</b></div>`).join("")}</div>`}`;
+if(!sel){app.querySelectorAll(".ch").forEach(c=>c.onclick=()=>{beep(600,.06);login(c.dataset.n)});return}
+const f=()=>{if($("#p").value.trim().toLowerCase()===USERS[sel]){me=sel;win();menu()}else{$("#e").textContent="❌ Contraseña incorrecta";lose()}};
+$("#go").onclick=f;$("#bk").onclick=()=>login();$("#p").onkeydown=e=>{if(e.key=="Enter")f()};setTimeout(()=>$("#p").focus(),50)}
+const tot=n=>Object.keys(G).reduce((a,g)=>a+((scores[n]||{})[g]||0),0);
+function menu(){stopGame=null;document.querySelector(".wrap").style.maxWidth="";const rank=Object.keys(USERS).sort((a,b)=>tot(b)-tot(a)),m=["🥇","🥈","🥉"],mine=scores[me]||{},closed=new Date()>DEADLINE;
+const GI={fruits:["🍓","Lluvia de Frutas","Atrapa frutas, esquiva ajos","#fff"],pairs:["🃏","Desafío de Parejas","Memoria con cartas trampa","#fff"],snake:["🍷","Snake Wine Edition","30 niveles de copas","#fff"]};
+app.innerHTML=`<div class="card hero" style="--c:${AV[me][1]};display:flex;align-items:center;gap:14px;text-align:left"><div class="big" style="font-size:54px">${AV[me][0]}</div>
+<div style="flex:1"><div class="sm" style="text-align:left">¡Bienvenid@!</div><h2 style="margin:0;text-align:left">${me}</h2><div class="sm" style="text-align:left">${online?"🟢 Online en tiempo real":"🟠 Sin conexión (local)"}</div></div>
+<div style="text-align:center"><div style="font-size:26px;color:#fff;font-weight:600">${tot(me)}</div><div class="sm">PUNTOS</div></div></div>
+${closed?`<div class="card" style="text-align:center"><h2>🏁 ¡Campeonato cerrado!</h2><p>Clasificación final · 27 de noviembre de 2026</p>${rank.slice(0,3).map((n,i)=>`<div style="padding:10px;margin:7px 0;border-radius:16px;background:rgba(255,255,255,.22);font-size:20px">${["🥇","🥈","🥉"][i]} <b>${n}</b> · ${tot(n)} puntos</div>`).join("")}</div>`:""}
+<div class="games">${Object.keys(G).map(g=>`<div class="gc" data-g="${g}" style="--c:${GI[g][3]}"><div class="gi">${GI[g][0]}</div><div style="flex:1"><b>${GI[g][1]}</b><div class="sm" style="text-align:left">${GI[g][2]}</div></div>
+<div style="text-align:center"><b style="color:${GI[g][3]};font-size:20px">${mine[g]||0}</b><div class="sm">MEJOR</div></div><div class="play">▶</div></div>`).join("")}</div>
+<div class="card"><h2 style="margin:0 0 8px">🏆 Clasificación</h2><table><tr><th></th><th></th><th>Jugador</th><th>🍓</th><th>🃏</th><th>🍷</th><th>Total</th></tr>
+${rank.map((n,i)=>{const s=scores[n]||{};return`<tr class="${n==me?"me":""}"><td>${m[i]||i+1}</td><td style="font-size:20px">${AV[n][0]}</td><td>${n}</td><td>${s.fruits||0}</td><td>${s.pairs||0}</td><td>${s.snake||0}</td><td><b>${tot(n)}</b></td></tr>`}).join("")}</table></div>
+<button class="btn s" id="out">Salir</button>`;
+app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{if(closed)return;beep(700,.06);play(b.dataset.g)});$("#out").onclick=()=>{me=null;login()}}
+// ---- reglas ----
+const RU={fruits:["🍓","Lluvia de Frutas",[["🧺","Mueve la cesta con el dedo, el ratón o las flechas."],["🍓","Recoge todas las frutas que caen."],["🧄","Esquiva ajos, cebollas y botellas: te quitan una vida."],["⏱","Tienes 3 vidas y 60 segundos. Cada vez cae más rápido."]],"2 puntos por cada 10 frutas"],
+pairs:["🃏","Desafío de Parejas",[["👆","Toca dos cartas por turno."],["✨","Si son iguales, se quedan descubiertas."],["💣","Cuidado: hay cartas trampa que no tienen pareja."],["🔓","Son 10 niveles, cada uno más difícil. Si fallas demasiado, pierdes."]],"2 puntos por cada 3 parejas"],
+snake:["🍷","Snake · Wine Edition",[["🐍","Guía la serpiente con las flechas o deslizando el dedo."],["🍷","Cada copa que recojas te hace crecer y subir de nivel."],["💥","No choques contra las paredes ni contra tu cola."],["🏆","Supera los 30 niveles para ganar."]],"2 puntos por cada copa"]};
+function play(g){const[ic,t,rs,pt]=RU[g];document.querySelector(".wrap").style.maxWidth="760px";
+app.innerHTML=`<div class="card rules"><div class="big">${ic}</div><h2 class="rt">${t}</h2><div class="rl">CÓMO SE JUEGA</div>
+${rs.map(r=>`<div class="rule"><span class="e">${r[0]}</span><span>${r[1]}</span></div>`).join("")}
+<div class="pts">⭐ ${pt}</div><button class="btn p" id="st">¡EMPEZAR!</button><button class="btn s" id="bk">⬅ Menú</button></div>`;
+$("#st").onclick=()=>{beep(800,.1);run(g)};$("#bk").onclick=menu}
+// ---- marco de juego ----
+function run(g){let paused=false,over=false,best=0;
+app.innerHTML=`<div class="hud"><button class="btn s" id="bm">⬅ Menú</button><button class="btn s" id="bp">⏸</button><span id="sc">0 pts</span><span id="inf"></span></div>
+<div id="stage"></div><div id="pad"><i></i><button data-d="U">▲</button><i></i><button data-d="L">◀</button><button data-d="D">▼</button><button data-d="R">▶</button></div>`;
+document.querySelector(".wrap").style.maxWidth="980px";const st=$("#stage"),api={get paused(){return paused||over},set(p,inf){best=p;$("#sc").textContent=p+" pts";if(inf!=null)$("#inf").textContent=inf},
+end(w,p){if(over)return;over=true;best=p;save(g,p);w?win():lose();const o=document.createElement("div");o.className="ov";
+o.innerHTML=`<h2>${w?"🎉 ¡VICTORIA!":"💀 DERROTA"}</h2><p style="font-size:22px">${p} puntos</p><button class="btn p" id="ra">🔁 Jugar otra vez</button><button class="btn" id="rm">Menú</button>`;
+st.appendChild(o);$("#ra").onclick=()=>run(g);$("#rm").onclick=exit}};
+function exit(){if(!over&&best)save(g,best);if(stopGame)stopGame();menu()}
+$("#bm").onclick=exit;$("#bp").onclick=()=>{if(over)return;paused=!paused;$("#bp").textContent=paused?"▶":"⏸"};
+stopGame=({fruits,pairs,snake})[g](st,api)||(()=>{});const sg=stopGame;stopGame=()=>{sg();stopGame=null}}
+const loop=f=>{let id,l=performance.now();const t=n=>{f(Math.min(.05,(n-l)/1000));l=n;id=requestAnimationFrame(t)};id=requestAnimationFrame(t);return()=>cancelAnimationFrame(id)};
+// ---- 1 FRUTAS ----
+function fruits(st,api){const W=480,H=640,cv=document.createElement("canvas");cv.width=W;cv.height=H;cv.style.width="min(100%,"+(72*W/H)+"vh)";st.appendChild(cv);const x=cv.getContext("2d");
+const F=["🍓","🍎","🍊","🍌","🍇","🍉"],B=["🧄","🧅","🍾","🥦","🌶️","🪨","🧹","🧪"];let bx=W/2,items=[],lives=3,t=60,n=0,sp=170,spawn=0,el=0;
+const mv=e=>{const r=cv.getBoundingClientRect(),p=(e.touches?e.touches[0]:e).clientX;bx=Math.max(45,Math.min(W-45,(p-r.left)*W/r.width))};
+cv.onmousemove=mv;cv.ontouchmove=e=>{e.preventDefault();mv(e)};cv.ontouchstart=mv;
+const kd=e=>{if(e.key=="ArrowLeft")bx=Math.max(45,bx-40);if(e.key=="ArrowRight")bx=Math.min(W-45,bx+40)};addEventListener("keydown",kd);
+const pts=()=>Math.floor(n/10)*2,info=()=>api.set(pts(),`❤️${lives} ⏱${Math.ceil(t)} 🍓${n}`);info();
+const stop=loop(d=>{if(api.paused)return;t-=d;el+=d;
+// Acelerones claros a los 10 y 20 segundos, con un pequeño aumento posterior.
+sp=210+(el>=10?110:0)+(el>=20?190:0)+Math.max(0,el-20)*2.5;spawn-=d;
+if(spawn<=0){const tier=el>=20?2:el>=10?1:0;spawn=Math.max(.2,[.78,.52,.32][tier]);const bad=Math.random()<[.30,.48,.64][tier];items.push({x:40+Math.random()*(W-80),y:-20,e:(bad?B:F)[Math.random()*(bad?B.length:F.length)|0],bad})}
+items.forEach(i=>i.y+=sp*d);
+items=items.filter(i=>{if(i.y>H-95&&i.y<H-10&&Math.abs(i.x-bx)<58){if(i.bad){lives--;lose&&beep(150,.2,"sawtooth")}else{n++;beep(700+n%10*60,.05)}return false}return i.y<H+20});
+x.clearRect(0,0,W,H);x.font="42px serif";x.textAlign="center";items.forEach(i=>x.fillText(i.e,i.x,i.y));x.font="68px serif";x.fillText("🧺",bx,H-14);
+if(n&&n%10==0&&!cv._f){cv._f=1;x.fillStyle="#ffe600";x.fillText("+2",bx,H-70)}if(n%10)cv._f=0;info();
+if(lives<=0)api.end(false,pts());else if(t<=0)api.end(true,pts())});
+return()=>{stop();removeEventListener("keydown",kd)}}
+// ---- 2 PAREJAS ----
+function pairs(st,api){const E=["🍓","🍎","🍊","🍌","🍇","🍉","🍒","🍑","🥝","🍍","🥭","🍋","🍐","🥥","🍈","🌽","🥕","🍔"];let L=1,total=0,sel=[],lock=false,moves=0,fails=0,max=0,found=0,cells=0,alive=true;
+function lvl(){const np=3+L,od=Math.min(10,2+L);let a=E.slice(0,np).flatMap(e=>[e,e]);a.push(...["💣","💀","👻","🕷️","☠️","🧨","🦂","🪤","⚡","🔥"].slice(0,od));a.sort(()=>Math.random()-.5);
+cells=a.length;found=0;moves=0;fails=0;max=np+3;const cols=a.length>20?5:a.length>12?4:3;
+st.innerHTML=`<div id="grid" style="grid-template-columns:repeat(${cols},1fr)">${a.map((e,i)=>`<div class="c" data-i="${i}" data-e="${e}">❔</div>`).join("")}</div>`;
+sel=[];st.querySelectorAll(".c").forEach(c=>c.onclick=()=>pick(c));info()}
+const info=()=>api.set(Math.floor((total+found)/3)*2,`Nivel ${L}/10 · Mov ${moves} · ❌${fails}/${max}`);
+function pick(c){if(lock||!alive||api.paused||c.classList.contains("up")||c.classList.contains("ok"))return;c.classList.add("up");c.textContent=c.dataset.e;beep(500,.05);sel.push(c);
+if(sel.length<2)return;moves++;const[a,b]=sel;sel=[];
+if(a.dataset.e==b.dataset.e){a.className=b.className="c ok";found++;beep(900,.1);info();if(found==3+L){total+=found;L++;if(L>10){alive=false;api.end(true,Math.floor(total/3)*2)}else{lock=true;setTimeout(()=>{lock=false;lvl()},800)}}}
+else{lock=true;fails++;setTimeout(()=>{[a,b].forEach(z=>{z.className="c";z.textContent="❔"});lock=false;info();if(fails>=max){alive=false;api.end(false,Math.floor((total+found)/3)*2)}},700)}}
+lvl();return()=>{alive=false}}
+// ---- 3 SNAKE ----
+// El crecimiento ya está implementado: al comer una copa no se ejecuta sn.pop(), por lo que la cola gana un segmento.
+function snake(st,api){const N=8,HN=9,S=30,W=N*S,Z=HN*S,cv=document.createElement("canvas");cv.width=W;cv.height=Z;cv.style.width="min(100%,38vh)";st.appendChild(cv);const x=cv.getContext("2d");
+const C=Math.floor(N/2),CY=Math.floor(HN/2);let sn=[{x:C,y:CY},{x:C-1,y:CY},{x:C-2,y:CY},{x:C-3,y:CY},{x:C-4,y:CY}],pv=sn.slice(),dir={x:1,y:0},nd={x:1,y:0},cups=0,cup,acc=0,tm=0;const lv=()=>Math.min(30,cups+1),spd=()=>Math.max(.07,.22-lv()*.005);
+const put=()=>{do cup={x:Math.random()*N|0,y:Math.random()*HN|0};while(sn.some(s=>s.x==cup.x&&s.y==cup.y))};put();
+const turn=d=>{const v={U:[0,-1],D:[0,1],L:[-1,0],R:[1,0]}[d];if(v[0]!=-nd.x||v[1]!=-nd.y)nd={x:v[0],y:v[1]}};
+const kd=e=>{const m={ArrowUp:"U",ArrowDown:"D",ArrowLeft:"L",ArrowRight:"R"}[e.key];if(m){e.preventDefault();turn(m)}};addEventListener("keydown",kd);
+document.querySelectorAll("#pad button").forEach(b=>b.onclick=()=>turn(b.dataset.d));
+let sx,sy;cv.ontouchstart=e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY};cv.ontouchend=e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+if(Math.max(Math.abs(dx),Math.abs(dy))>20)turn(Math.abs(dx)>Math.abs(dy)?(dx>0?"R":"L"):(dy>0?"D":"U"))};
+const info=()=>api.set(cups*2,`Nivel ${lv()}/30 · 🍷${cups}`);info();
+const ln=(a,b,w,c)=>{x.strokeStyle=c;x.lineWidth=w;x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke()};
+function draw(t){x.fillStyle="#fff3f8";x.fillRect(0,0,W,Z);for(let i=0;i<N;i++)for(let j=0;j<HN;j++)if((i+j)%2){x.fillStyle="#ff5fa214";x.fillRect(i*S,j*S,S,S)}
+const cx=cup.x*S+S/2,cy=cup.y*S+S/2+Math.sin(tm*5)*1.5;
+// Copa grande, con halo y fondo para distinguirla incluso entre los segmentos.
+x.save();x.shadowColor="#ff267e";x.shadowBlur=22;x.fillStyle="rgba(255,255,255,.92)";x.beginPath();x.arc(cx,cy, S*.48,0,Math.PI*2);x.fill();x.shadowBlur=0;
+x.font="30px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("🍷",cx,cy+1);x.restore();
+const P=sn.map((s,i)=>{const q=pv[Math.min(i,pv.length-1)];return[(q.x+(s.x-q.x)*t)*S+S/2,(q.y+(s.y-q.y)*t)*S+S/2]}),n=P.length;x.lineCap="round";
+const segW=i=>S*(.86-.5*i/n);
+for(let i=n-2;i>=0;i--)ln(P[i],P[i+1],segW(i)+4,"#04210f");
+for(let i=n-2;i>=0;i--)ln(P[i],P[i+1],segW(i),i%2?"#1f9d3a":"#2fcf4f");
+for(let i=n-2;i>=0;i--)ln(P[i],P[i+1],segW(i)*.45,i%2?"#c9e86a":"#e8f59a");
+for(let i=1;i<n-1;i+=2){x.fillStyle="#0a4d1e";x.save();x.translate(P[i][0],P[i][1]);x.rotate(Math.PI/4);const w=segW(i)*.22;x.fillRect(-w,-w,w*2,w*2);x.restore()}
+const h=P[0],a=Math.atan2(dir.y,dir.x);x.save();x.translate(h[0],h[1]);x.rotate(a);
+if(Math.sin(tm*9)>.2){x.strokeStyle="#ff3050";x.lineWidth=3;x.beginPath();x.moveTo(S*.4,0);x.lineTo(S*.85,0);x.moveTo(S*.85,0);x.lineTo(S*1.05,-5);x.moveTo(S*.85,0);x.lineTo(S*1.05,5);x.stroke()}
+x.fillStyle="#04210f";x.beginPath();x.ellipse(2,0,S*.62,S*.5,0,0,7);x.fill();x.fillStyle="#2fcf4f";x.beginPath();x.ellipse(2,0,S*.58,S*.45,0,0,7);x.fill();
+x.fillStyle="#1f9d3a";x.beginPath();x.ellipse(-4,0,S*.3,S*.3,0,0,7);x.fill();
+for(const k of[-1,1]){x.fillStyle="#ffe600";x.beginPath();x.arc(S*.18,k*S*.26,S*.15,0,7);x.fill();x.fillStyle="#000";x.beginPath();x.ellipse(S*.2,k*S*.26,S*.03,S*.12,0,0,7);x.fill();x.fillStyle="#04210f";x.fillRect(S*.52,k*S*.15-1,3,3)}
+x.restore()}
+const stop=loop(d=>{tm+=d;if(!api.paused){acc+=d;if(acc>=spd()){acc-=spd();dir=nd;const h={x:sn[0].x+dir.x,y:sn[0].y+dir.y};
+if(h.x<0||h.y<0||h.x>=N||h.y>=HN||sn.slice(0,-1).some(s=>s.x==h.x&&s.y==h.y)){draw(1);return api.end(false,cups*2)}
+pv=sn.slice();sn.unshift(h);if(h.x==cup.x&&h.y==cup.y){cups++;beep(900,.1);info();if(cups>=30){draw(1);return api.end(true,60)}put()}else sn.pop()}}
+draw(Math.min(1,acc/spd()))});
+return()=>{stop();removeEventListener("keydown",kd)}}
+login();
+</script></body></html>
